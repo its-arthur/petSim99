@@ -4,9 +4,18 @@ local SaveManager = loadstring(game:HttpGet(
 local InterfaceManager = loadstring(game:HttpGet(
     "https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
+--------------------------------------------------
+------------------- Init Data --------------------
+--------------------------------------------------
+--#region Init Data
+local SCRIPTNAME = "אַרטהור"
+local SCRIPTVERSION = "אַרטהור"
+--#endregion
+
+
 local Window = Fluent:CreateWindow({
-    Title = "Fluent " .. Fluent.Version,
-    SubTitle = "by dawid",
+    Title = "SCRIPTNAME " .. SCRIPTVERSION,
+    SubTitle = "by lazyarthur",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true,                        -- The blur may be detectable, setting this to false disables blur entirely
