@@ -39,7 +39,7 @@ do
     })
 
 --#region AutoLoot
-    local ToggleAutoLoot = Tabs.Main:AddToggle("Auto Loot", { Title = "Auto Loot", Default = false })
+    local ToggleAutoLoot = Tabs.Main:AddToggle("Auto Loot", { Title = "Toggle", Default = false })
 
     ToggleAutoLoot:OnChanged(function()
         if Options.ToggleAutoLoot.Value then
@@ -50,7 +50,7 @@ do
     end)
 --#endregion
 
-    local ToggleFPSBoost = Tabs.Main:AddToggle("FPS Boost", { Title = "FPS Boost", Default = false })
+    local ToggleFPSBoost = Tabs.Main:AddToggle("FPS Boost", { Title = "Toggle", Default = false })
 
     ToggleFPSBoost:OnChanged(function()
         if Options.ToggleFPSBoost.Value then
