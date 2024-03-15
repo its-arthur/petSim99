@@ -34,7 +34,7 @@ local Options = Fluent.Options
 
 do
     Fluent:Notify({
-        Title = SCRIPTNAME .. SCRIPTVERSION,
+        Title = SCRIPTNAME .. " " .. SCRIPTVERSION,
         Content = "Script has been loaded.",
         Duration = 2               -- Set to nil to make the notification not disappear
     })
@@ -77,7 +77,7 @@ do
                         Title = "Cancel",
                         Callback = function()
                             Fluent:Notify({
-                                Title = SCRIPTNAME .. SCRIPTVERSION,
+                                Title = SCRIPTNAME,
                                 Content = "You have cancelled the rejoin.",
                                 Duration = 2 -- Set to nil to make the notification not disappear
                             })
@@ -208,7 +208,7 @@ SaveManager:BuildConfigSection(Tabs.Settings)
 Window:SelectTab(1)
 
 Fluent:Notify({
-    Title = SCRIPTNAME .. SCRIPTVERSION,
+    Title = SCRIPTNAME,
     Content = "Settings have been restored.",
     Duration = 2
 })
