@@ -34,10 +34,9 @@ local Options = Fluent.Options
 
 do
     Fluent:Notify({
-        Title = "Notification",
-        Content = "This is a notification",
-        SubContent = "SubContent", -- Optional
-        Duration = 5               -- Set to nil to make the notification not disappear
+        Title = SCRIPTNAME .. SCRIPTVERSION,
+        Content = "Script has been loaded.",
+        Duration = 2               -- Set to nil to make the notification not disappear
     })
 
     local Toggle = Tabs.Main:AddToggle("MyToggle", { Title = "Toggle", Default = false })
@@ -78,9 +77,9 @@ do
                         Title = "Cancel",
                         Callback = function()
                             Fluent:Notify({
-                                Title = "Artemis",
+                                Title = SCRIPTNAME .. SCRIPTVERSION,
                                 Content = "You have cancelled the rejoin.",
-                                Duration = 5 -- Set to nil to make the notification not disappear
+                                Duration = 2 -- Set to nil to make the notification not disappear
                             })
                         end
                     }
@@ -209,9 +208,9 @@ SaveManager:BuildConfigSection(Tabs.Settings)
 Window:SelectTab(1)
 
 Fluent:Notify({
-    Title = "Fluent",
-    Content = "The script has been loaded.",
-    Duration = 8
+    Title = SCRIPTNAME .. SCRIPTVERSION,
+    Content = "Settings have been restored.",
+    Duration = 2
 })
 
 SaveManager:LoadAutoloadConfig()
