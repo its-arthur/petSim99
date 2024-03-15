@@ -1,9 +1,3 @@
-local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
-
 --------------------------------------------------
 ------------------- Init Data --------------------
 --------------------------------------------------
@@ -12,6 +6,10 @@ local SCRIPTNAME = "Artemis"
 local SCRIPTVERSION = "1.0.0"
 --#endregion
 
+--#region UI & Tab
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
     Title = SCRIPTNAME .. SCRIPTVERSION,
@@ -25,10 +23,11 @@ local Window = Fluent:CreateWindow({
 
 --Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
-    Main = Window:AddTab({ Title = "Main", Icon = "" }),
-    Performance = Window:AddTab({ Title = "Performance", Icon = "" }),
+    Main = Window:AddTab({ Title = "Main", Icon = "circle-dot-dashed" }),
+    Performance = Window:AddTab({ Title = "Performance", Icon = "circle-gauge" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
+--#endregion
 
 local Options = Fluent.Options
 
@@ -36,23 +35,25 @@ do
     Fluent:Notify({
         Title = SCRIPTNAME .. " " .. SCRIPTVERSION,
         Content = "Script has been loaded.",
-        Duration = 2               -- Set to nil to make the notification not disappear
+        Duration = 3
     })
 
-    local Toggle = Tabs.Main:AddToggle("MyToggle", { Title = "Toggle", Default = false })
+--#region AutoLoot
+    local ToggleAutoLoot = Tabs.Main:AddToggle("Auto Loot", { Title = "Auto Loot", Default = false })
 
-    Toggle:OnChanged(function()
-        if Options.MyToggle.Value then
+    ToggleAutoLoot:OnChanged(function()
+        if Options.ToggleAutoLoot.Value then
             AutoLoot()
         else
             print("Toggle is off")
         end
     end)
+--#endregion
 
-    local Togglea = Tabs.Main:AddToggle("MyToggle", { Title = "Toggle", Default = false })
+    local ToggleFPSBoost = Tabs.Main:AddToggle("FPS Boost", { Title = "FPS Boost", Default = false })
 
-    Togglea:OnChanged(function()
-        if Options.MyToggle.Value then
+    ToggleFPSBoost:OnChanged(function()
+        if Options.ToggleFPSBoost.Value then
             BootFps()
         else
             print("Toggle is off")
@@ -77,9 +78,9 @@ do
                         Title = "Cancel",
                         Callback = function()
                             Fluent:Notify({
-                                Title = SCRIPTNAME,
+                                Title = SCRIPTNAME .. " " .. SCRIPTVERSION,
                                 Content = "You have cancelled the rejoin.",
-                                Duration = 2 -- Set to nil to make the notification not disappear
+                                Duration = 1
                             })
                         end
                     }
@@ -88,6 +89,10 @@ do
         end
     })
 end
+
+--------------------------------------------------
+------------------ Function --------------------
+--------------------------------------------------
 
 function AutoLoot()
     task.spawn(function()
@@ -208,9 +213,9 @@ SaveManager:BuildConfigSection(Tabs.Settings)
 Window:SelectTab(1)
 
 Fluent:Notify({
-    Title = SCRIPTNAME,
+    Title = SCRIPTNAME .. " " .. SCRIPTVERSION,
     Content = "Settings have been restored.",
-    Duration = 2
+    Duration = 3
 })
 
 SaveManager:LoadAutoloadConfig()
