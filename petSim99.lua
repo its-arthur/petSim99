@@ -8,11 +8,13 @@ local SCRIPTVERSION = "1.0.0"
 
 --#region UI & Tab
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
-local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+local SaveManager = loadstring(game:HttpGet(
+"https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet(
+"https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = SCRIPTNAME .. SCRIPTVERSION,
+    Title = SCRIPTNAME .. " " .. SCRIPTVERSION,
     SubTitle = "by lazyarthur",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
@@ -23,8 +25,12 @@ local Window = Fluent:CreateWindow({
 
 --Fluent provides Lucide Icons https://lucide.dev/icons/ for the tabs, icons are optional
 local Tabs = {
-    Main = Window:AddTab({ Title = "Main", Icon = "circle-dot-dashed" }),
-    Performance = Window:AddTab({ Title = "Performance", Icon = "circle-gauge" }),
+    Main = Window:AddTab({ Title = "Main", Icon = "focus" }),
+    Eggs = Window:AddTab({ Title = "Eggs", Icon = "egg" }),
+    Items = Window:AddTab({ Title = "Items", Icon = "boxes" }),
+    Teleport = Window:AddTab({ Title = "Teleport", Icon = "mountain" }),
+    Rewards = Window:AddTab({ Title = "Rewards", Icon = "gift" }),
+    Misc = Window:AddTab({ Title = "Misc", Icon = "apple" }),
     Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
 }
 --#endregion
@@ -38,29 +44,77 @@ do
         Duration = 3
     })
 
---#region AutoLoot
-    local Toggle = Tabs.Main:AddToggle("Auto Lootasd", { Title = "Toggle", Default = false })
+    --#region [AutoLoot] Main
+    local ToggleAutoLoot = Tabs.Main:AddToggle("AutoLootValue", { Title = "Auto Loot", Default = false })
 
-    Toggle:OnChanged(function()
-        if Options.Toggle.Value then
+    ToggleAutoLoot:OnChanged(function()
+        while Options.AutoLootValue.Value do
+            wait(1)
             AutoLoot()
-        else
-            print("Toggle is off")
         end
     end)
---#endregion
 
-    local ToggleFPSBoost = Tabs.Main:AddToggle("FPS Boost", { Title = "Toggle", Default = false })
+    Options.AutoLootValue:SetValue(false)
+    --#endregion
 
-    ToggleFPSBoost:OnChanged(function()
-        if Options.ToggleFPSBoost.Value then
+    --#region [AutoUlt] Main
+    local ToggleAutoUlt = Tabs.Main:AddToggle("AutoUltValue", { Title = "Auto Ult", Default = false })
+
+    ToggleAutoUlt:OnChanged(function()
+        while Options.AutoUltValue.Value do
+            wait(1)
+            AutoLoot()
+        end
+    end)
+
+    Options.AutoUltValue:SetValue(false)
+    --#endregion
+
+    --#region [Pet Speed] Main
+    Tabs.Main:AddButton({
+        Title = "Boost Pet Speed",
+        Description = "Make your pet move in speed of light!",
+        Callback = function()
+            PetSpeed()
+        end
+    })
+    --#endregion
+
+    Tabs.Misc:AddParagraph({
+        Title = "Performance",
+        Content = ""
+    })
+    
+
+    --#region [Playtime Rewards] Rewards
+    local ToggleAutoPlayTimeRewards = Tabs.Rewards:AddToggle("AutoPlayTimeRewardsValue", { Title = "Auto Claim Playtime Rewards", Default = false })
+
+    ToggleAutoPlayTimeRewards:OnChanged(function()
+        while Options.AutoPlayTimeRewardsValue.Value do
+            wait(1)
+            AutoPlayTimeRewards()
+        end
+    end)
+
+    Options.AutoPlayTimeRewardsValue:SetValue(false)
+
+    --#region [Boost FPS] Misc
+    Tabs.Misc:AddButton({
+        Title = "Boost FPS",
+        Description = "Remove all effects to boost FPS",
+        Callback = function()
             BootFps()
-        else
-            print("Toggle is off")
         end
-    end)
+    })
+    --#endregion
 
-    Tabs.Performance:AddButton({
+    Tabs.Misc:AddParagraph({
+        Title = "Server",
+        Content = ""
+    })
+
+    --#region [Rejoin] Misc
+    Tabs.Misc:AddButton({
         Title = "Rejoin",
         Description = "Rejoins the game",
         Callback = function()
@@ -71,7 +125,8 @@ do
                     {
                         Title = "Confirm",
                         Callback = function()
-                            game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
+                            game:GetService("TeleportService"):Teleport(game.PlaceId,
+                                game:GetService("Players").LocalPlayer)
                         end
                     },
                     {
@@ -88,31 +143,36 @@ do
             })
         end
     })
+    --#endregion
 end
 
 --------------------------------------------------
 ------------------ Function --------------------
 --------------------------------------------------
 
+function AutoPlayTimeRewards()
+    task.spawn(function()
+        for v = 1,10 do
+            game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Redeem Free Gift"):InvokeServer(v)
+        end
+    end)
+end
+
 function AutoLoot()
     task.spawn(function()
-        game.Workspace["__THINGS"]["Lootbags"].ChildAdded:Connect(function(v)
+        workspace["__THINGS"]["Lootbags"].ChildAdded:Connect(function(v)
             task.spawn(function()
-                game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbags_Claim"):FireServer({
-                    [1] = tostring(
-                        v.Name)
-                })
+                game:GetService("ReplicatedStorage").Network:FindFirstChild("Lootbags_Claim"):FireServer({ [1] = tostring(
+                v.Name) })
                 task.delay(.1, function()
                     v:Destroy()
                 end)
             end)
         end)
-        game.Workspace["__THINGS"]["Orbs"].ChildAdded:Connect(function(v)
+        workspace["__THINGS"]["Orbs"].ChildAdded:Connect(function(v)
             task.spawn(function()
-                game:GetService("ReplicatedStorage").Network:FindFirstChild("Orbs: Collect"):FireServer({
-                    [1] = tonumber(
-                        v.Name)
-                })
+                game:GetService("ReplicatedStorage").Network:FindFirstChild("Orbs: Collect"):FireServer({ [1] = tonumber(
+                v.Name) })
                 task.delay(.1, function()
                     v:Destroy()
                 end)
@@ -197,6 +257,13 @@ function BootFps()
     end)
 end
 
+function PetSpeed()
+    local Client = require(game:GetService("ReplicatedStorage").Library:WaitForChild("Client"))
+    Client.PlayerPet.CalculateSpeedMultiplier = function(...)
+        return 999
+    end
+end
+
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
 
@@ -210,7 +277,7 @@ SaveManager:SetFolder("FluentScriptHub/specific-game")
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
 SaveManager:BuildConfigSection(Tabs.Settings)
 
-Window:SelectTab(1)
+Window:SelectTab(2)
 
 Fluent:Notify({
     Title = SCRIPTNAME .. " " .. SCRIPTVERSION,
