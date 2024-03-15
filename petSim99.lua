@@ -8,13 +8,13 @@ local InterfaceManager = loadstring(game:HttpGet(
 ------------------- Init Data --------------------
 --------------------------------------------------
 --#region Init Data
-local SCRIPTNAME = "אַרטהור"
-local SCRIPTVERSION = "אַרטהור"
+local SCRIPTNAME = "Artemis"
+local SCRIPTVERSION = "1.0.0"
 --#endregion
 
 
 local Window = Fluent:CreateWindow({
-    Title = "SCRIPTNAME " .. SCRIPTVERSION,
+    Title = SCRIPTNAME .. SCRIPTVERSION,
     SubTitle = "by lazyarthur",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
