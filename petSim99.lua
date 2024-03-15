@@ -39,10 +39,10 @@ do
     })
 
 --#region AutoLoot
-    local ToggleAutoLoot = Tabs.Main:AddToggle("Auto Loot", { Title = "Toggle", Default = false })
+    local Toggle = Tabs.Main:AddToggle("Auto Lootasd", { Title = "Toggle", Default = false })
 
-    ToggleAutoLoot:OnChanged(function()
-        if Options.ToggleAutoLoot.Value then
+    Toggle:OnChanged(function()
+        if Options.Toggle.Value then
             AutoLoot()
         else
             print("Toggle is off")
