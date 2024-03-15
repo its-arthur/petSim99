@@ -77,7 +77,11 @@ do
                     {
                         Title = "Cancel",
                         Callback = function()
-                            print("Cancelled the dialog.")
+                            Fluent:Notify({
+                                Title = "Artemis",
+                                Content = "You have cancelled the rejoin.",
+                                Duration = 5 -- Set to nil to make the notification not disappear
+                            })
                         end
                     }
                 }
